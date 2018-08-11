@@ -1,0 +1,11 @@
+
+webpack is watching the files…
+
+Hash: d289d85a4cb354c9bb31
+Version: webpack 4.16.5
+Time: 77ms
+Built at: 2018-08-11 13:25:51
+         Asset     Size  Chunks             Chunk Names
+main.bundle.js  3.8 KiB    main  [emitted]  main
+Entrypoint main = main.bundle.js
+[./src/index.js] 28 bytes {main} [built]
