@@ -1,16 +1,26 @@
 import 'p5';
+import imageProvider from './util/image-provider';
 import Game from './game';
 
 let canvas;
 let game;
 
-const setGameProps = () => {
+const clearWindow = () => {
     background(150, 150, 200);
+}
+
+const setGameProps = () => {
+    clearWindow();
     frameRate(60);
+    angleMode(DEGREES);
+}
+
+window.preload = function() {
+    imageProvider.loadImages();
 }
 
 window.setup = function() {
-    createCanvas(800, 600);
+    createCanvas(1600, 900)
     setGameProps();
     game = new Game();
 }
@@ -21,6 +31,6 @@ window.setup = function() {
 // }
 
 window.draw = function() {
-    game.tick();
+    clearWindow();
     game.render();
 }

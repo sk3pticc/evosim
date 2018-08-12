@@ -16,3 +16,9 @@ Only one trait of any specific type can be passed down when mating (so only 1 sp
 
 Speed
 Size
+
+## Lifeforms
+
+_Teeb_
+
+A teeb is the focus of the sim. These will undergo evolution.

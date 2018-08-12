@@ -108,6 +108,54 @@ eval("var g;\n\n// This works in non-strict mode\ng = (function() {\n\treturn th
 
 /***/ }),
 
+/***/ "./src/behaviour/movement/rotator.js":
+/*!*******************************************!*\
+  !*** ./src/behaviour/movement/rotator.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\nconst rotator = (state) => ({\r\n    attach: () => ({ ...state, rotation: 0 }),\r\n    spin: () => {\r\n        const centreX = state.x + (state.width / 2);\r\n        const centreY = state.y + (state.height / 2);\r\n        const newRotation = state.rotation + 1;\r\n\r\n        translate(centreX, centreY);\r\n        rotate(newRotation)\r\n\r\n        return { ...state, rotation: newRotation };\r\n    }\r\n});\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (rotator);\n\n//# sourceURL=webpack:///./src/behaviour/movement/rotator.js?");
+
+/***/ }),
+
+/***/ "./src/behaviour/movement/swimmer.js":
+/*!*******************************************!*\
+  !*** ./src/behaviour/movement/swimmer.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _constants_directions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../constants/directions */ \"./src/constants/directions.js\");\n\r\n\r\nconst determineNewDirectionOfMovement = (state) => {\r\n        const vRandom = Math.random() * 1000;\r\n        const hRandom = Math.random() * 1000;\r\n\r\n        let newVDirection = null;\r\n        let newHDirection = null;\r\n\r\n        if ( vRandom < 300 ) {\r\n            newVDirection = _constants_directions__WEBPACK_IMPORTED_MODULE_0__[\"default\"].UP;\r\n        } else if ( vRandom < 600 ) {\r\n            newVDirection = _constants_directions__WEBPACK_IMPORTED_MODULE_0__[\"default\"].DOWN;\r\n        }\r\n\r\n        if ( hRandom < 300 ) {\r\n            newHDirection = _constants_directions__WEBPACK_IMPORTED_MODULE_0__[\"default\"].RIGHT;\r\n        } else if ( hRandom < 600 ) {\r\n            newHDirection = _constants_directions__WEBPACK_IMPORTED_MODULE_0__[\"default\"].LEFT;\r\n        }\r\n\r\n        return { ...state, hDirection: newHDirection, vDirection: newVDirection }\r\n}\r\n\r\nconst swimmer = (state) => ({\r\n    attach: (xVel, yVel, atRest, vDirection, hDirection) => ({ ...state, xVel, yVel, atRest, vDirection, hDirection }),\r\n    swim: () => {\r\n        let newX;\r\n        let newY;\r\n\r\n        newX = state.x + state.xVel;\r\n        newY = state.y + state.yVel;\r\n\r\n        return {...state, x: newX, y: newY};\r\n    },\r\n    turn: () => {\r\n        const newState = {...state};\r\n\r\n        if (state.atRest) {\r\n\r\n            newState.xVel = 0;\r\n            newState.yVel = 0;\r\n\r\n        } else {\r\n\r\n            if (state.hDirection == _constants_directions__WEBPACK_IMPORTED_MODULE_0__[\"default\"].LEFT) {\r\n                newState.xVel = -1;\r\n            } else if (state.hDirection === _constants_directions__WEBPACK_IMPORTED_MODULE_0__[\"default\"].RIGHT) {\r\n                newState.xVel = 1;\r\n            }\r\n\r\n            if (state.vDirection == _constants_directions__WEBPACK_IMPORTED_MODULE_0__[\"default\"].UP) {\r\n                newState.xVel = -1;\r\n            } else if (state.vDirection == _constants_directions__WEBPACK_IMPORTED_MODULE_0__[\"default\"].DOWN) {\r\n                newState.xVel = 1;\r\n            }\r\n        }\r\n\r\n        return newState;\r\n    },\r\n    shouldTurn: () => {\r\n        if (Math.random() * 1000) {\r\n            return determineNewDirectionOfMovement(state);\r\n        }\r\n    }\r\n\r\n});\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (swimmer);\r\n\r\n/***\r\n * Basic Movement\r\n * \r\n * A direction will be determined by the specimen every so often (the time between decisions will be randomly generated.)\r\n * The specimen will then move in that direction until a new direction is determined.\r\n * \r\n * A specimen can go one of the vertical directions and one of the horizontal directions simultaneously, or it can just go one.\r\n */\n\n//# sourceURL=webpack:///./src/behaviour/movement/swimmer.js?");
+
+/***/ }),
+
+/***/ "./src/constants/directions.js":
+/*!*************************************!*\
+  !*** ./src/constants/directions.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = ({\r\n    LEFT: 'LEFT',\r\n    UP: 'UP',\r\n    RIGHT: 'RIGHT',\r\n    DOWN: 'DOWN',\r\n});\n\n//# sourceURL=webpack:///./src/constants/directions.js?");
+
+/***/ }),
+
+/***/ "./src/entity/teeb.js":
+/*!****************************!*\
+  !*** ./src/entity/teeb.js ***!
+  \****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _util_image_provider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/image-provider */ \"./src/util/image-provider.js\");\n/* harmony import */ var _constants_directions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../constants/directions */ \"./src/constants/directions.js\");\n/* harmony import */ var _behaviour_movement_rotator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../behaviour/movement/rotator */ \"./src/behaviour/movement/rotator.js\");\n/* harmony import */ var _behaviour_movement_swimmer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../behaviour/movement/swimmer */ \"./src/behaviour/movement/swimmer.js\");\n\r\n\r\n\r\n\r\n\r\n\r\nclass Teeb {\r\n    constructor(x, y) {\r\n        this.img = _util_image_provider__WEBPACK_IMPORTED_MODULE_0__[\"default\"].getImage('teeb');\r\n\r\n        const entityWidth = this.img.width;\r\n        const entityHeight = this.img.height; \r\n\r\n        this.state = {\r\n            x,\r\n            y,\r\n            width: entityWidth,\r\n            height: entityHeight,\r\n            centreX: -(entityWidth / 2),\r\n            centreY: -(entityHeight / 2),\r\n        }  \r\n\r\n        this.attachBehaviours();\r\n    }\r\n\r\n    attachBehaviours() {\r\n        this.state = Object(_behaviour_movement_rotator__WEBPACK_IMPORTED_MODULE_2__[\"default\"])(this.state).attach();\r\n        this.state = Object(_behaviour_movement_swimmer__WEBPACK_IMPORTED_MODULE_3__[\"default\"])(this.state).attach(1, 1, false, _constants_directions__WEBPACK_IMPORTED_MODULE_1__[\"default\"].UP, _constants_directions__WEBPACK_IMPORTED_MODULE_1__[\"default\"].LEFT);\r\n    }\r\n\r\n    isAtRest() {\r\n        const random = Math.random() * 2000;\r\n        if (random < 1000) {\r\n            this.state = { ...this.state, atRest: true };\r\n        } else {\r\n            this.state = { ...this.state, atRest: false }\r\n        }\r\n    }\r\n\r\n    // separate these direcgtion based things out into a behaviour script. probably not the swimmer one cos we wanna keep all those funcs pure\r\n    \r\n    behave() {\r\n\r\n        this.state = Object(_behaviour_movement_swimmer__WEBPACK_IMPORTED_MODULE_3__[\"default\"])(this.state).swim();\r\n        this.state = Object(_behaviour_movement_swimmer__WEBPACK_IMPORTED_MODULE_3__[\"default\"])(this.state).shouldTurn();\r\n        this.state = Object(_behaviour_movement_swimmer__WEBPACK_IMPORTED_MODULE_3__[\"default\"])(this.state).turn();\r\n        this.state = Object(_behaviour_movement_rotator__WEBPACK_IMPORTED_MODULE_2__[\"default\"])(this.state).spin();\r\n    }\r\n\r\n    render() {\r\n        const { centreX, centreY } = this.state;\r\n\r\n        push();\r\n        this.behave();\r\n        image(this.img, centreX, centreY);\r\n        pop();\r\n    }\r\n}\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (Teeb);\n\n//# sourceURL=webpack:///./src/entity/teeb.js?");
+
+/***/ }),
+
 /***/ "./src/game.js":
 /*!*********************!*\
   !*** ./src/game.js ***!
@@ -116,7 +164,7 @@ eval("var g;\n\n// This works in non-strict mode\ng = (function() {\n\treturn th
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\nclass Game {\r\n    tick() {\r\n\r\n    }\r\n\r\n    render() {\r\n        console.log('rendering in game.js');\r\n    }\r\n};\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (Game);\n\n//# sourceURL=webpack:///./src/game.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _entity_teeb__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./entity/teeb */ \"./src/entity/teeb.js\");\n\r\n\r\nclass Game {\r\n    constructor() {\r\n        this.teeb = new _entity_teeb__WEBPACK_IMPORTED_MODULE_0__[\"default\"](500, 500);\r\n    }\r\n\r\n    render() {\r\n        this.teeb.render();\r\n    }\r\n};\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (Game);\n\n//# sourceURL=webpack:///./src/game.js?");
 
 /***/ }),
 
@@ -128,7 +176,19 @@ eval("__webpack_require__.r(__webpack_exports__);\nclass Game {\r\n    tick() {\
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! p5 */ \"./node_modules/p5/lib/p5.js\");\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(p5__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./game */ \"./src/game.js\");\n\r\n\r\n\r\nlet canvas;\r\nlet game;\r\n\r\nconst setGameProps = () => {\r\n    background(150, 150, 200);\r\n    frameRate(60);\r\n}\r\n\r\nwindow.setup = function() {\r\n    createCanvas(800, 600);\r\n    setGameProps();\r\n    game = new _game__WEBPACK_IMPORTED_MODULE_1__[\"default\"]();\r\n}\r\n\r\n// window.windowResized = function() {\r\n//     resizeCanvas(windowWidth, windowHeight);\r\n//     setGameProps();\r\n// }\r\n\r\nwindow.draw = function() {\r\n    game.tick();\r\n    game.render();\r\n}\r\n\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! p5 */ \"./node_modules/p5/lib/p5.js\");\n/* harmony import */ var p5__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(p5__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _util_image_provider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util/image-provider */ \"./src/util/image-provider.js\");\n/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./game */ \"./src/game.js\");\n\r\n\r\n\r\n\r\nlet canvas;\r\nlet game;\r\n\r\nconst clearWindow = () => {\r\n    background(150, 150, 200);\r\n}\r\n\r\nconst setGameProps = () => {\r\n    clearWindow();\r\n    frameRate(60);\r\n    angleMode(DEGREES);\r\n}\r\n\r\nwindow.preload = function() {\r\n    _util_image_provider__WEBPACK_IMPORTED_MODULE_1__[\"default\"].loadImages();\r\n}\r\n\r\nwindow.setup = function() {\r\n    createCanvas(1600, 900)\r\n    setGameProps();\r\n    game = new _game__WEBPACK_IMPORTED_MODULE_2__[\"default\"]();\r\n}\r\n\r\n// window.windowResized = function() {\r\n//     resizeCanvas(windowWidth, windowHeight);\r\n//     setGameProps();\r\n// }\r\n\r\nwindow.draw = function() {\r\n    clearWindow();\r\n    game.render();\r\n}\r\n\n\n//# sourceURL=webpack:///./src/index.js?");
+
+/***/ }),
+
+/***/ "./src/util/image-provider.js":
+/*!************************************!*\
+  !*** ./src/util/image-provider.js ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\nclass ImageProvider {\r\n    constructor() {\r\n        this.imgs = {};\r\n    }\r\n\r\n    loadImages() {\r\n        this.imgs.teeb = loadImage('/img/teeb.png');\r\n    }\r\n\r\n    getImage(name) {\r\n        return this.imgs[name];\r\n    }\r\n};\r\n\r\nconst imageProvider = new ImageProvider();\r\n\r\n/* harmony default export */ __webpack_exports__[\"default\"] = (imageProvider);\n\n//# sourceURL=webpack:///./src/util/image-provider.js?");
 
 /***/ })
 

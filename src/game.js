@@ -1,10 +1,12 @@
-class Game {
-    tick() {
+import Teeb from './entity/teeb';
 
+class Game {
+    constructor() {
+        this.teeb = new Teeb(500, 500);
     }
 
     render() {
-        console.log('rendering in game.js');
+        this.teeb.render();
     }
 };
 
